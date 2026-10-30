@@ -1,4 +1,8 @@
-// РАЗМЕТКА СТРАНИЦЫ 
+//  Подключение стилей
+const styleLink = document.createElement('link');
+styleLink.rel = 'stylesheet';
+styleLink.href = 'style.css';
+document.head.append(styleLink);
 
 // Шапка
 const header = document.createElement('header');
