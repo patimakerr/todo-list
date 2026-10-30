@@ -189,6 +189,21 @@ form.addEventListener('submit', (event) => {
   saveTasks();
   renderTasks();
   form.reset();
+  textInput.focus();
 });
 
 renderTasks();
+
+// Удаление задачи
+list.addEventListener('click', (event) => {
+  const button = event.target.closest('button');
+  if (!button || button.dataset.action !== 'delete') {
+    return;
+  }
+
+  const id = Number(button.closest('.task').dataset.id);
+  tasks = tasks.filter((task) => task.id !== id);
+
+  saveTasks();
+  renderTasks();
+});
