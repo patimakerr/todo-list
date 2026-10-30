@@ -89,3 +89,106 @@ footer.textContent = '2026 ToDo-лист';
 
 // Добавляем все на страницу
 document.body.append(header, main, footer);
+
+//  Данные и LOCALSTORAGE 
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+function saveTasks() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function formatDate(value) {
+  const [year, month, day] = value.split('-');
+  return `${day}.${month}.${year}`;
+}
+
+// Создание карточки задачи
+function createTaskElement(task) {
+  const item = document.createElement('li');
+  item.className = 'task';
+  item.dataset.id = task.id;
+
+  if (task.done) {
+    item.classList.add('task--done');
+  }
+
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.className = 'task__checkbox';
+  checkbox.checked = task.done;
+  checkbox.setAttribute('aria-label', 'Отметить как выполненную');
+
+  const content = document.createElement('div');
+  content.className = 'task__content';
+
+  const text = document.createElement('p');
+  text.className = 'task__text';
+  text.textContent = task.text;
+
+  const date = document.createElement('time');
+  date.className = 'task__date';
+  date.dateTime = task.date;
+  date.textContent = 'Срок: ' + formatDate(task.date);
+
+  content.append(text, date);
+
+  const actions = document.createElement('div');
+  actions.className = 'task__actions';
+
+  const editButton = document.createElement('button');
+  editButton.type = 'button';
+  editButton.className = 'button';
+  editButton.textContent = 'Изменить';
+  editButton.dataset.action = 'edit';
+
+  const deleteButton = document.createElement('button');
+  deleteButton.type = 'button';
+  deleteButton.className = 'button button--danger';
+  deleteButton.textContent = 'Удалить';
+  deleteButton.dataset.action = 'delete';
+
+  actions.append(editButton, deleteButton);
+  item.append(checkbox, content, actions);
+
+  return item;
+}
+
+// Сортировка списка
+function renderTasks() {
+  list.replaceChildren();
+
+  if (tasks.length === 0) {
+    const empty = document.createElement('li');
+    empty.className = 'list__empty';
+    empty.textContent = 'Задач пока нет';
+    list.append(empty);
+    return;
+  }
+
+  tasks.forEach((task) => {
+    list.append(createTaskElement(task));
+  });
+}
+
+// Добавление задач в список
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const text = textInput.value.trim();
+  if (text === '') {
+    return;
+  }
+
+  tasks.push({
+    id: Date.now(),
+    text: text,
+    date: dateInput.value,
+    done: false,
+  });
+
+  saveTasks();
+  renderTasks();
+  form.reset();
+});
+
+renderTasks();
