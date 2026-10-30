@@ -202,6 +202,10 @@ list.addEventListener('click', (event) => {
   }
 
   const id = Number(button.closest('.task').dataset.id);
+    if (!confirm('Удалить задачу?')) {
+    return;
+  }
+
   tasks = tasks.filter((task) => task.id !== id);
 
   saveTasks();
