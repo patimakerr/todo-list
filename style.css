@@ -176,3 +176,8 @@ button {
     flex: auto;
   }
 }
+
+
+.button {
+  transition: background 0.2s;
+}
