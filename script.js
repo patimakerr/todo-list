@@ -225,3 +225,70 @@ list.addEventListener('change', (event) => {
   saveTasks();
   renderTasks();
 });
+
+
+// Редактирование задачи
+function startEdit(item, task) {
+  item.draggable = false;
+  item.replaceChildren();
+
+  const editText = document.createElement('input');
+  editText.type = 'text';
+  editText.className = 'task__edit-text';
+  editText.value = task.text;
+  editText.setAttribute('aria-label', 'Новое название');
+
+  const editDate = document.createElement('input');
+  editDate.type = 'date';
+  editDate.className = 'task__edit-date';
+  editDate.value = task.date;
+  editDate.setAttribute('aria-label', 'Новая дата');
+
+  const actions = document.createElement('div');
+  actions.className = 'task__actions';
+
+  const saveButton = document.createElement('button');
+  saveButton.type = 'button';
+  saveButton.className = 'button';
+  saveButton.textContent = 'Сохранить';
+
+  const cancelButton = document.createElement('button');
+  cancelButton.type = 'button';
+  cancelButton.className = 'button button--secondary';
+  cancelButton.textContent = 'Отмена';
+
+  saveButton.addEventListener('click', () => {
+    const newText = editText.value.trim();
+
+    if (newText === '' || editDate.value === '') {
+      alert('Заполните название и дату');
+      return;
+    }
+
+    task.text = newText;
+    task.date = editDate.value;
+    saveTasks();
+    renderTasks();
+  });
+
+  cancelButton.addEventListener('click', () => {
+    renderTasks();
+  });
+
+  actions.append(saveButton, cancelButton);
+  item.append(editText, editDate, actions);
+  editText.focus();
+}
+
+list.addEventListener('click', (event) => {
+  const button = event.target.closest('button');
+  if (!button || button.dataset.action !== 'edit') {
+    return;
+  }
+
+  const item = button.closest('.task');
+  const id = Number(item.dataset.id);
+  const task = tasks.find((t) => t.id === id);
+
+  startEdit(item, task);
+});
