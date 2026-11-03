@@ -298,3 +298,23 @@ list.addEventListener('click', (event) => {
 
   startEdit(item, task);
 });
+
+// Сортировка по дате
+let sortAscending = true;
+
+sortButton.addEventListener('click', () => {
+  tasks.sort((a, b) => {
+    if (sortAscending) {
+      return a.date.localeCompare(b.date);
+    }
+    return b.date.localeCompare(a.date);
+  });
+
+  sortAscending = !sortAscending;
+  sortButton.textContent = sortAscending
+    ? 'Сортировать: сначала ранние'
+    : 'Сортировать: сначала поздние';
+
+  saveTasks();
+  renderTasks();
+});
