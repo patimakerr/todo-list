@@ -275,6 +275,12 @@ function startEdit(item, task) {
     renderTasks();
   });
 
+  editText.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      saveButton.click();
+    }
+  });
+
   actions.append(saveButton, cancelButton);
   item.append(editText, editDate, actions);
   editText.focus();
