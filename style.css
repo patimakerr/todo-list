@@ -181,3 +181,14 @@ button {
 .button {
   transition: background 0.2s;
 }
+
+
+/* Выполненная задача */
+.task--done {
+  background: #e9f7ef;
+}
+
+.task--done .task__text {
+  text-decoration: line-through;
+  color: #999;
+}

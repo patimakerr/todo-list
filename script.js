@@ -211,3 +211,17 @@ list.addEventListener('click', (event) => {
   saveTasks();
   renderTasks();
 });
+
+// Отметка выполнено
+list.addEventListener('change', (event) => {
+  if (!event.target.classList.contains('task__checkbox')) {
+    return;
+  }
+
+  const id = Number(event.target.closest('.task').dataset.id);
+  const task = tasks.find((item) => item.id === id);
+  task.done = event.target.checked;
+
+  saveTasks();
+  renderTasks();
+});
