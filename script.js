@@ -108,6 +108,7 @@ function createTaskElement(task) {
   const item = document.createElement('li');
   item.className = 'task';
   item.dataset.id = task.id;
+  item.draggable = true;
 
   if (task.done) {
     item.classList.add('task--done');
@@ -336,3 +337,52 @@ sortButton.addEventListener('click', () => {
 // Фильтр и список
 filterSelect.addEventListener('change', renderTasks);
 searchInput.addEventListener('input', renderTasks);
+
+// DRAG-AND-DROP 
+let draggedId = null;
+
+list.addEventListener('dragstart', (event) => {
+  const item = event.target.closest('.task');
+  if (!item) {
+    return;
+  }
+
+  draggedId = Number(item.dataset.id);
+  event.dataTransfer.setData('text/plain', item.dataset.id);
+  item.classList.add('task--dragging');
+});
+
+list.addEventListener('dragend', (event) => {
+  const item = event.target.closest('.task');
+  if (item) {
+    item.classList.remove('task--dragging');
+  }
+});
+
+list.addEventListener('dragover', (event) => {
+  event.preventDefault();
+});
+
+list.addEventListener('drop', (event) => {
+  event.preventDefault();
+
+  const target = event.target.closest('.task');
+  if (!target || draggedId === null) {
+    return;
+  }
+
+  const targetId = Number(target.dataset.id);
+  if (targetId === draggedId) {
+    return;
+  }
+
+  const fromIndex = tasks.findIndex((task) => task.id === draggedId);
+  const toIndex = tasks.findIndex((task) => task.id === targetId);
+
+  const [movedTask] = tasks.splice(fromIndex, 1);
+  tasks.splice(toIndex, 0, movedTask);
+
+  draggedId = null;
+  saveTasks();
+  renderTasks();
+});
