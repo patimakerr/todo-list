@@ -154,19 +154,32 @@ function createTaskElement(task) {
   return item;
 }
 
-// Сортировка списка
+// Отсортировка списка
 function renderTasks() {
   list.replaceChildren();
 
-  if (tasks.length === 0) {
+  const searchText = searchInput.value.trim().toLowerCase();
+  const filter = filterSelect.value;
+
+  const visibleTasks = tasks.filter((task) => {
+    if (filter === 'active' && task.done) {
+      return false;
+    }
+    if (filter === 'done' && !task.done) {
+      return false;
+    }
+    return task.text.toLowerCase().includes(searchText);
+  });
+
+  if (visibleTasks.length === 0) {
     const empty = document.createElement('li');
     empty.className = 'list__empty';
-    empty.textContent = 'Задач пока нет';
+    empty.textContent = 'Задачи не найдены';
     list.append(empty);
     return;
   }
 
-  tasks.forEach((task) => {
+  visibleTasks.forEach((task) => {
     list.append(createTaskElement(task));
   });
 }
@@ -319,3 +332,7 @@ sortButton.addEventListener('click', () => {
   saveTasks();
   renderTasks();
 });
+
+// Фильтр и список
+filterSelect.addEventListener('change', renderTasks);
+searchInput.addEventListener('input', renderTasks);
