@@ -197,3 +197,7 @@ button {
 .task--dragging {
   opacity: 0.4;
 }
+
+.task:active {
+  cursor: grabbing;
+}
