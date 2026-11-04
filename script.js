@@ -73,6 +73,7 @@ const sortButton = document.createElement('button');
 sortButton.type = 'button';
 sortButton.className = 'button';
 sortButton.textContent = 'Сортировать: сначала ранние';
+sortButton.title = 'Сортировка задач по дате';
 
 controls.append(searchInput, filterSelect, sortButton);
 
@@ -299,7 +300,7 @@ list.addEventListener('click', (event) => {
   startEdit(item, task);
 });
 
-// Сортировка по дате
+// Сортировка по датеа
 let sortAscending = true;
 
 sortButton.addEventListener('click', () => {
