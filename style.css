@@ -150,7 +150,6 @@ button {
   font-size: 14px;
 }
 
-/* Адаптивность для телефонов */
 @media (max-width: 600px) {
   .header__title {
     font-size: 22px;
@@ -183,7 +182,6 @@ button {
 }
 
 
-/* Выполненная задача */
 .task--done {
   background: #e9f7ef;
 }
@@ -193,7 +191,6 @@ button {
   color: #999;
 }
 
-/* Перетаскиваемая задача */
 .task--dragging {
   opacity: 0.4;
 }

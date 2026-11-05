@@ -1,10 +1,8 @@
-//  Подключение стилей
 const styleLink = document.createElement('link');
 styleLink.rel = 'stylesheet';
 styleLink.href = 'style.css';
 document.head.append(styleLink);
 
-// Шапка
 const header = document.createElement('header');
 header.className = 'header';
 
@@ -14,11 +12,9 @@ title.textContent = 'Мой список задач';
 
 header.append(title);
 
-// Основная часть
 const main = document.createElement('main');
 main.className = 'main';
 
-// Форма добавления задачи
 const form = document.createElement('form');
 form.className = 'form';
 
@@ -42,7 +38,6 @@ addButton.textContent = 'Добавить';
 
 form.append(textInput, dateInput, addButton);
 
-// Панель управления: поиск, фильтр, сортировка
 const controls = document.createElement('section');
 controls.className = 'controls';
 
@@ -77,21 +72,17 @@ sortButton.title = 'Сортировка задач по дате';
 
 controls.append(searchInput, filterSelect, sortButton);
 
-// Список задач
 const list = document.createElement('ul');
 list.className = 'list';
 
 main.append(form, controls, list);
 
-// Подвал
 const footer = document.createElement('footer');
 footer.className = 'footer';
 footer.textContent = '2026 ToDo-лист';
 
-// Добавляем все на страницу
 document.body.append(header, main, footer);
 
-//  Данные и LOCALSTORAGE 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 function saveTasks() {
@@ -103,7 +94,6 @@ function formatDate(value) {
   return `${day}.${month}.${year}`;
 }
 
-// Создание карточки задачи
 function createTaskElement(task) {
   const item = document.createElement('li');
   item.className = 'task';
@@ -155,7 +145,6 @@ function createTaskElement(task) {
   return item;
 }
 
-// Отсортировка списка
 function renderTasks() {
   list.replaceChildren();
 
@@ -185,7 +174,6 @@ function renderTasks() {
   });
 }
 
-// Добавление задач в список
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -209,7 +197,6 @@ form.addEventListener('submit', (event) => {
 
 renderTasks();
 
-// Удаление задачи
 list.addEventListener('click', (event) => {
   const button = event.target.closest('button');
   if (!button || button.dataset.action !== 'delete') {
@@ -227,7 +214,6 @@ list.addEventListener('click', (event) => {
   renderTasks();
 });
 
-// Отметка выполнено
 list.addEventListener('change', (event) => {
   if (!event.target.classList.contains('task__checkbox')) {
     return;
@@ -242,7 +228,6 @@ list.addEventListener('change', (event) => {
 });
 
 
-// Редактирование задачи
 function startEdit(item, task) {
   item.draggable = false;
   item.replaceChildren();
@@ -314,7 +299,6 @@ list.addEventListener('click', (event) => {
   startEdit(item, task);
 });
 
-// Сортировка по датеа
 let sortAscending = true;
 
 sortButton.addEventListener('click', () => {
@@ -334,11 +318,9 @@ sortButton.addEventListener('click', () => {
   renderTasks();
 });
 
-// Фильтр и список
 filterSelect.addEventListener('change', renderTasks);
 searchInput.addEventListener('input', renderTasks);
 
-// DRAG-AND-DROP 
 let draggedId = null;
 
 list.addEventListener('dragstart', (event) => {
